@@ -358,7 +358,7 @@ export default function Home() {
         {/* Hero */}
         <section id="about" className="min-h-[80vh] sm:min-h-screen flex items-center justify-center pt-24 relative overflow-hidden" data-aos="fade-up">
           <Image 
-            src="/images/test.gif" 
+            src="/images/Backgrounds/about.gif" 
             alt="Фоновое изображение для раздела О компании" 
             fill 
             className="object-cover z-0" 
