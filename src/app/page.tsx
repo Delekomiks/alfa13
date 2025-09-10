@@ -4,149 +4,56 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import AOS from 'aos';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper вместо Slick
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'; // Модули для arrows, dots, autoplay
+import 'swiper/css'; // Базовый CSS
+import 'swiper/css/navigation'; // Для arrows
+import 'swiper/css/pagination'; // Для dots
+import { projects, partners, industries, Project, Partner, Industry } from './data'; // Импорт из data.ts
 
-// Type definitions
-type Project = {
-  id: number;
-  src: string;
-  alt: string;
-  title: string;
-  description: string;
-  clientIcon: string;
-  background: string;
-  aosDelay: number;
-};
-
-type Partner = {
-  id: number;
-  src: string;
-  alt: string;
-  background: string;
-};
-
-// Data arrays
-const partners: Partner[] = [
-  { id: 1, src: '/images/clients/3.png', alt: 'Партнёр 1 - описание для доступности', background: '/images/2port.png' },
-  { id: 2, src: '/images/clients/2.png', alt: 'Партнёр 2 - описание для доступности', background: '/images/2port.png' },
-  { id: 3, src: '/images/clients/2.png', alt: 'Партнёр 3 - описание для доступности', background: '/images/2port.png' },
-  { id: 4, src: '/images/clients/3.png', alt: 'Партнёр 4 - описание для доступности', background: '/images/2port.png' },
-];
-
-const projects: Project[] = [
-  { 
-    id: 1, 
-    src: '/images/ProjectImg/1.jpg', 
-    alt: 'Проект 1 - описание изображения', 
-    title: 'Проект 1', 
-    description: 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/1.png',
-    background: '/images/1port.png',
-    aosDelay: 0
-  },
-  { 
-    id: 2, 
-    src: '/images/ProjectImg/1.jpg', 
-    alt: 'Проект 2 - описание изображения', 
-    title: 'Проект 2', 
-    description: 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/2.png',
-    background: '/images/2port.png',
-    aosDelay: 100
-  },
-  { 
-    id: 3, 
-    src: '/images/ProjectImg/1.jpg', 
-    alt: 'Проект 3 - описание изображения', 
-    title: 'Проект 3', 
-    description: 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/1.png',
-    background: '/images/3port.png',
-    aosDelay: 200
-  },
-  { 
-    id: 4,
-    src: '/images/ProjectImg/1.jpg',  
-    alt: 'Проект 4 - описание изображения', 
-    title: 'Проект 4', 
-    description: 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/1.png',
-    background: '/images/1port.png',  
-    aosDelay: 300
-  },
-  { 
-    id: 5,  
-    src: '/images/ProjectImg/1.jpg',  
-    alt: 'Проект 5 - описание изображения', 
-    title: 'Проект 5', 
-    description: 'Sed ut perspiciatis,unde omnis iste natus error unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis sit voluptatem accusantium doloremque laudantium Sed ut perspiciatisunde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/1.png',
-    background: '/images/2port.png',
-    aosDelay: 400  
-  },
-  { 
-    id: 6,  
-    src: '/images/ProjectImg/1.jpg',  
-    alt: 'Проект 6 - описание изображения', 
-    title: 'Проект 6', 
-    description: 'Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium', 
-    clientIcon: '/images/Clients/1.png',
-    background: '/images/3port.png',
-    aosDelay: 500
-  },
-];
-
-// Полностью независимые настройки для портфолио
-const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-
-const portfolioSliderSettings = {
-  dots: true,
-  infinite: true,
+// Настройки для портфолио с двумя видимыми на десктопе
+const portfolioSwiperSettings = {
+  modules: [Navigation, Pagination],
+  slidesPerView: 1,
+  spaceBetween: 16, // Эквивалент px-2 padding
+  loop: true,
   speed: 300,
-  slidesToShow: isMobile ? 1 : 3,
-  slidesToScroll: 1,
-  arrows: !isMobile,
-  responsive: [
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false
-      }
+  pagination: { clickable: true },
+  navigation: false, // По умолчанию false для mobile
+  breakpoints: {
+    768: {
+      slidesPerView: 3, // Два видимых на >=768px
+      navigation: true // Arrows только на десктопе
     }
-  ]
+  }
 };
 
-const partnersSliderSettings = {
-  dots: true,
-  infinite: true,
+const partnersSwiperSettings = {
+  modules: [Navigation, Pagination, Autoplay],
+  slidesPerView: 1,
+  spaceBetween: 16,
+  loop: true,
   speed: 300,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  arrows: true,
-  autoplay: true,
-  autoplaySpeed: 18000,
-  responsive: [
-    {
-      breakpoint: 768,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false
-      }
+  pagination: { clickable: true },
+  navigation: false, // По умолчанию false
+  autoplay: {
+    delay: 18000,
+    disableOnInteraction: false
+  },
+  breakpoints: {
+    768: {
+      slidesPerView: 1,
+      navigation: false
     },
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        arrows: false
-      }
+    1024: {
+      slidesPerView: 2,
+      navigation: false
+    },
+    1280: { // Добавил для больших экранов
+      slidesPerView: 3,
+      navigation: true
     }
-  ]
+  }
 };
 
 // Smooth scroll handler
@@ -173,14 +80,14 @@ const NavLink = ({ href, children, onClick, className = '' }: { href: string; ch
 );
 NavLink.displayName = 'NavLink';
 
-// Memoized ProjectCard
+// Memoized ProjectCard с увеличенной высотой
 const ProjectCard = React.memo(({ project }: { project: Project }) => (
   <div 
     className="px-2 h-full"
     data-aos="zoom-in" 
     data-aos-delay={project.aosDelay}
   >
-    <div className="relative p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition border border-blackDeep overflow-hidden min-h-[350px] sm:min-h-[400px] md:min-h-[500px] flex flex-col h-full">
+    <div className="relative p-4 sm:p-6 rounded-lg shadow-md hover:shadow-lg transition  overflow-hidden min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col h-full">
       {project.background ? (
         <Image
           src={project.background}
@@ -202,13 +109,13 @@ const ProjectCard = React.memo(({ project }: { project: Project }) => (
               alt={project.alt}
               width={400} 
               height={250} 
-              className="w-full h-32 sm:h-48 object-cover object-center rounded border border-blackDeep mb-2"
+              className="w-full h-50 sm:h-70 object-cover object-center rounded  mb-2"
               loading="lazy"
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
               onError={(e) => { e.currentTarget.src = '/images/placeholder.png'; }}
             />
           ) : (
-            <div className="w-full h-32 sm:h-48 rounded border border-blackDeep bg-transparent mb-2" />
+            <div className="w-full h-50 sm:h-70 rounded  bg-transparent mb-2" />
           )}
           <button 
             className="w-full bg-gold text-blackDeep px-4 py-1 rounded text-sm font-montserrat font-bold hover:bg-goldHover transition flex items-center justify-between"
@@ -232,7 +139,7 @@ const ProjectCard = React.memo(({ project }: { project: Project }) => (
           </button>
         </div>
         <div className="flex-1 flex flex-col justify-start mb-4">
-          <p className="text-grayLight font-roboto line-clamp-4 sm:line-clamp-6 overflow-hidden text-sm sm:text-base">
+          <p className="text-grayLight font-roboto line-clamp-10 sm:line-clamp-10 overflow-hidden text-sm sm:text-base">
             {project.description}
           </p>
         </div>
@@ -249,7 +156,7 @@ const PartnerCard = React.memo(({ partner, index }: { partner: Partner; index: n
     data-aos="zoom-in" 
     data-aos-delay={index * 100}
   >
-    <div className="relative p-1 rounded-lg shadow-md hover:shadow-lg transition border border-blackDeep overflow-hidden min-h-[120px] sm:min-h-[150px] md:min-h-[200px] flex flex-col h-full">
+    <div className="relative p-1 rounded-lg shadow-md hover:shadow-lg transition  overflow-hidden min-h-[120px] sm:min-h-[150px] md:min-h-[200px] flex flex-col h-full">
       {partner.background ? (
         <Image
           src={partner.background}
@@ -284,8 +191,100 @@ const PartnerCard = React.memo(({ partner, index }: { partner: Partner; index: n
 ));
 PartnerCard.displayName = 'PartnerCard';
 
+// Memoized IndustryCard with modal trigger
+const IndustryCard = React.memo(({ industry, index, onOpenModal }: { industry: Industry; index: number; onOpenModal: (industry: Industry) => void }) => (
+  <div 
+    className="relative rounded-lg shadow-md overflow-hidden h-110 cursor-pointer industry-card"
+    data-aos="zoom-in" 
+    data-aos-delay={index * 100}
+    onClick={() => onOpenModal(industry)}
+  >
+    <Image 
+      src={industry.src} 
+      alt={industry.alt}
+      fill
+      className="object-cover"
+      loading="lazy"
+      sizes="(max-width: 768px) 100vw, 25vw"
+      onError={(e) => { e.currentTarget.src = '/images/placeholder.png'; }}
+    />
+    <div className="absolute bottom-0 left-0 right-0 bg-blackDeep p-4 text-center opacity-90">
+      <h3 className="text-lg font-semibold text-gold font-montserrat">{industry.title}</h3>
+    </div>
+  </div>
+));
+IndustryCard.displayName = 'IndustryCard';
+
+// Modal Component с добавленным списком из data.ts
+const IndustryModal = ({ industry, onClose }: { industry: Industry; onClose: () => void }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => setIsVisible(true), []);
+
+  return (
+    <div className={`fixed inset-0 bg-black/85 bg-opacity-20 flex items-center justify-center z-20 transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`} onClick={onClose}>
+      <div className={`bg-blackDeep rounded-lg p-6 max-w-lg w-full mx-4 transform transition-transform duration-300 ease-in-out ${isVisible ? 'scale-100' : 'scale-95'}`} onClick={(e) => e.stopPropagation()}>
+        <button className="absolute top-2 right-2 text-gold text-2xl" onClick={onClose}>×</button>
+        <h3 className="text-xl font-bold mb-2 text-gold font-montserrat">{industry.title}</h3>
+        <p className="text-grayLight font-roboto mb-4">{industry.description}</p>
+        {industry.services && industry.services.length > 0 && (
+          <ul className="list-disc pl-5 space-y-2 text-grayLight font-roboto text-sm sm:text-base">
+            {industry.services.map((item, index) => (
+              <li key={index} className="marker:text-gold">{item}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Новый компонент для модалки контактов
+const ContactModal = ({ onClose }: { onClose: () => void }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+
+    // Динамическая загрузка скрипта Yandex
+    const script = document.createElement('script');
+    script.src = 'https://forms.yandex.ru/_static/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // Cleanup при закрытии
+    };
+  }, []);
+
+  return (
+    <div 
+      className={`fixed inset-0 bg-black/85 flex items-center justify-center z-20 transition-opacity duration-300 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+      onClick={onClose}
+    >
+      <div 
+        className={`bg-blackDeep rounded-lg p-4 sm:p-6 max-w-md sm:max-w-xl md:max-w-3xl w-full mx-4 transform transition-transform duration-300 ease-in-out ${isVisible ? 'scale-100' : 'scale-95'}`} 
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="absolute top-2 right-2 text-gold text-2xl" onClick={onClose}>×</button>
+        <h3 className="text-xl font-bold mb-4 text-gold font-montserrat text-center">Связаться с нами</h3>
+        <div className="w-full flex justify-center items-start overflow-auto max-h-[80vh]">
+          <iframe 
+            src="https://forms.yandex.ru/cloud/68c1f380068ff0225209a264?iframe=1" 
+            frameBorder="0" 
+            name="ya-form-68c1f380068ff0225209a264" 
+            className="w-full md:w-[650px] min-h-[500px] md:min-h-[600px] h-auto rounded-md"  // Добавил rounded-md для стиля
+            style={{ margin: '0 auto' }}  // Fallback margin-auto для старых браузеров или если flex не сработает
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     AOS.init({
@@ -306,7 +305,7 @@ export default function Home() {
       </Head>
       <main className="bg-grayDark min-h-screen font-roboto">
         {/* Header */}
-        <header className={`bg-blackDeep shadow-md fixed w-full z-10 top-0 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'bg-opacity-95' : ''}`}>
+        <header className={`bg-grayDark/76 shadow-md fixed w-full z-10 top-0 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'bg-opacity-95' : ''}`}>
           <nav className="container mx-auto px-4 py-2 flex justify-between items-center">
             <div 
               className="flex items-center space-x-2 cursor-pointer hover:opacity-100 transition focus:outline-none" 
@@ -329,9 +328,11 @@ export default function Home() {
             </div>
             <ul className="hidden md:flex space-x-4 items-center">
               <li><NavLink href="#about" onClick={(e) => handleSmoothScroll(e, '#about')}>О компании</NavLink></li>
+              <li><NavLink href="#industries" onClick={(e) => handleSmoothScroll(e, '#industries')}>Отрасли</NavLink></li>
               <li><NavLink href="#portfolio" onClick={(e) => handleSmoothScroll(e, '#portfolio')}>Портфолио</NavLink></li>
               <li><NavLink href="#partners" onClick={(e) => handleSmoothScroll(e, '#partners')}>Партнёры</NavLink></li>
               <li><NavLink href="#contacts" onClick={(e) => handleSmoothScroll(e, '#contacts')}>Контакты</NavLink></li>
+              <li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); }}>Связаться</NavLink></li>
             </ul>
             <button 
               className="md:hidden text-gold text-2xl focus:outline-none focus:ring-2 focus:ring-gold"
@@ -345,9 +346,11 @@ export default function Home() {
           {isMobileMenuOpen && (
             <ul className="md:hidden bg-blackDeep px-4 py-2 space-y-2">
               <li><NavLink href="#about" onClick={(e) => { handleSmoothScroll(e, '#about'); setIsMobileMenuOpen(false); }} className="block w-full text-center">О компании</NavLink></li>
+              <li><NavLink href="#industries" onClick={(e) => { handleSmoothScroll(e, '#industries'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Отрасли</NavLink></li>
               <li><NavLink href="#portfolio" onClick={(e) => { handleSmoothScroll(e, '#portfolio'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Портфолио</NavLink></li>
               <li><NavLink href="#partners" onClick={(e) => { handleSmoothScroll(e, '#partners'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Партнёры</NavLink></li>
               <li><NavLink href="#contacts" onClick={(e) => { handleSmoothScroll(e, '#contacts'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Контакты</NavLink></li>
+              <li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); setIsMobileMenuOpen(false); }} className="block w-full text-center">Связаться</NavLink></li>
             </ul>
           )}
         </header>
@@ -365,58 +368,85 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black opacity-72 z-10"></div>
           <div className="container mx-auto px-4 text-center relative z-20">
-            <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-gold font-montserrat">Умный текст</h2>
+            <h2 className="text-3xl sm:text-5xl font-bold mb-4 text-gold font-montserrat">Цифровая трансформация с отраслевой глубиной и измеримым ростом</h2>
             <p className="text-base sm:text-xl text-grayLight max-w-2xl mx-auto mb-6 font-roboto line-clamp-[8] sm:line-clamp-none">
-              Quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
+              Мы объединяем стратегию и инженерную практику с цифровым мышлением и консультативным подходом — от ИБ и ИТ-инфраструктуры до проектирования/строительства объектов и мультимедийных систем — чтобы переосмысливать бизнес-модели, быстро строить и уверенно управлять решениями, которые ускоряют рост, повышают качество продукта и усиливают клиентский сервис в любой отрасли. 
+            </p>
+            <p className="text-base sm:text-xl text-grayLight max-w-2xl mx-auto mb-6 font-roboto line-clamp-[8] sm:line-clamp-none">
+              Один партнёр, единые SLA, прозрачные метрики.
             </p>
           </div>
         </section>
 
-{/* Portfolio */}
-<section id="portfolio" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
-  <div className="container mx-auto px-4">
-    <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Портфолио</h2>
-    <Slider key="portfolio-slider" {...portfolioSliderSettings} aria-label="Карусель портфолио">
-      {projects.map((project) => (
-        <ProjectCard key={project.id} project={project} />
-      ))}
-    </Slider>
-  </div>
-</section>
+        {/* Industries */}
+        <section id="industries" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Отрасли</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 industries-grid">
+              {industries.map((industry, index) => (
+                <IndustryCard 
+                  key={industry.id} 
+                  industry={industry} 
+                  index={index} 
+                  onOpenModal={setSelectedIndustry} 
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {selectedIndustry && (
+          <IndustryModal 
+            industry={selectedIndustry} 
+            onClose={() => setSelectedIndustry(null)} 
+          />
+        )}
+
+        {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
+
+        {/* Portfolio */}
+        <section id="portfolio" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Портфолио</h2>
+            <Swiper key="portfolio-swiper" {...portfolioSwiperSettings} aria-label="Карусель портфолио">
+              {projects.map((project) => (
+                <SwiperSlide key={project.id}>
+                  <ProjectCard project={project} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
 
         {/* Partners */}
         <section id="partners" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Партнёры</h2>
-            <Slider {...partnersSliderSettings} aria-label="Карусель партнёров">
+            <Swiper {...partnersSwiperSettings} aria-label="Карусель партнёров">
               {partners.map((partner, index) => (
-                <PartnerCard key={partner.id} partner={partner} index={index} />
+                <SwiperSlide key={partner.id}>
+                  <PartnerCard partner={partner} index={index} />
+                </SwiperSlide>
               ))}
-            </Slider>
+            </Swiper>
           </div>
         </section>
 
-        {/* Footer */}
-        <footer id="contacts" className="relative text-white py-6 sm:py-8 border-t border-blackDeep overflow-hidden mt-10 sm:mt-20">
-          <Image
-            src="/images/footer-bg.jpg"
-            alt="Фоновое изображение для футера"
-            fill
-            className="object-cover z-[-1]"
-            quality={70}
-            sizes="100vw"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-grayDark opacity-80 z-0" />
-          <div className="container mx-auto px-4 text-center relative z-10">
-            <hr className="border-gold my-4 w-24 mx-auto" />
-            <p className="text-xs sm:text-sm text-grayLight mb-4 font-roboto">
-              Адрес: ул. Примерная, 123 | 
-              Тел: <a href="tel:+74951234567" className="hover:text-gold transition font-roboto">+7 (495) 123-45-67</a> | 
-              Email: <a href="mailto:info@alfa13.ru" className="hover:text-gold transition font-roboto" aria-label="Отправить email на info@alfa13.ru">info@alfa13.ru</a>
-            </p>
-          </div>
-        </footer>
+        {/* Footer с добавленным слоганом над линией */}
+<footer id="contacts" className="text-white py-6 sm:py-8 border-t border-blackDeep mt-10 sm:mt-20">
+  <div className="container mx-auto px-4 text-center">
+    <p className="text-gold text-base sm:text-lg font-montserrat font-bold mb-4 uppercase">Будущее зависит от наших решений сегодня</p>
+    <hr className="border-gold my-4 w-24 mx-auto" />
+    <p className="text-xs sm:text-sm text-grayLight mb-4 font-roboto">
+      Адрес: ул. Примерная, 123 | 
+      Тел: <a href="tel:+74951234567" className="hover:text-gold transition font-roboto">+7 (495) 123-45-67</a> | 
+      Email: <a href="mailto:info@alfa13.ru" className="hover:text-gold transition font-roboto" aria-label="Отправить email на info@alfa13.ru">info@alfa13.ru</a> | 
+      <a href="/privacy" className="hover:text-gold transition font-roboto" aria-label="Политика конфиденциальности"> Политика конфиденциальности</a>
+    
+    </p>
+    <p className="text-grayLight mt-8 font-roboto text-center">© 2025 ООО «Альфа 13». Все права защищены.</p>
+  </div>
+</footer>
       </main>
     </>
   );

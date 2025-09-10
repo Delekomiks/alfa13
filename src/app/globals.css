@@ -1,7 +1,5 @@
 @import "tailwindcss"; /* Tailwind v4 */
 @import 'aos/dist/aos.css'; /* AOS анимации */
-@import 'slick-carousel/slick/slick.css'; /* Стили слайдера */
-@import 'slick-carousel/slick/slick-theme.css'; /* Тема слайдера */
 
 :root {
   --background: #ffffff;
@@ -39,6 +37,7 @@
     --color-gold: #D3AF37; /* Золотой #D3AF37 #EFBF04 #FFD700 */
     --color-goldHover: #A67C00;
     --color-grayDark: #1A1A1A;
+    --color-black: #000000;
     
   }
 }
@@ -48,6 +47,7 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans), Arial, sans-serif; /* Fallback */
 }
+
 
 
 
@@ -72,79 +72,144 @@ body {
   filter: drop-shadow(0 0 6px rgba(181, 181, 181, 0.7));
 }
 
-/* Кастомизация слайдера для плавности */
-.slick-slider {
+/* Кастомизация Swiper для плавности */
+.swiper {
   position: relative;
 }
 
-.slick-track {
+.swiper-wrapper {
   display: flex;
   will-change: transform; /* Оптимизация для анимаций */
   transform: translate3d(0, 0, 0); /* GPU-ускорение */
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Синхронизировано с sliderSettings */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Плавный свайп */
 }
 
-.slick-slide {
-  opacity: 0.7; /* Лёгкая прозрачность для неактивных слайдов */
-  transition: opacity 0.3s ease-in-out; /* Плавное появление */
+/* Убрал все opacity и transition для слайдов — теперь без затемнения */
+.swiper-slide {
+  opacity: 1; /* Полная яркость для всех */
 }
 
-.slick-slide.slick-active {
-  opacity: 1; /* Активный слайд полностью видим */
-}
-
-/* Стрелки */
-.slick-prev, .slick-next {
+/* Стрелки с фиксом для desktop */
+.swiper-button-prev, .swiper-button-next {
   z-index: 20;
   background: var(--color-blackDeep);
   border-radius: 50%;
-  transition: background 0.3s ease;
-}
-
-.slick-prev:hover, .slick-next:hover {
-  background: var(--color-goldHover);
-}
-
-.slick-prev:before, .slick-next:before {
+  transition: background 0.3s ease, filter 0.3s ease;
   color: var(--color-gold);
   font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden; /* По умолчанию hidden, чтобы не показывались на mobile */
 }
 
-.slick-prev {
+.swiper-button-prev:hover, .swiper-button-next:hover {
+  background: var(--color-goldHover);
+  filter: drop-shadow(0 0 6px var(--color-gold)); /* Glow на hover для крутости */
+}
+
+.swiper-button-prev {
   left: -50px;
 }
 
-.slick-next {
+.swiper-button-next {
   right: -50px;
 }
 
-/* Точки */
-.slick-dots {
-  bottom: -40px; /* Чуть ниже для пространства */
+/* Media query для desktop — показываем arrows и корректируем position */
+@media (min-width: 768px) {
+  .swiper-button-prev, .swiper-button-next {
+    visibility: visible; /* Видны на desktop */
+    left: -30px; /* Ближе к центру на широких экранах, чтобы не за viewport */
+    right: -30px; /* Аналогично */
+  }
 }
 
-.slick-dots li button:before {
-  color: var(--color-grayMedium);
-  font-size: 12px;
-  transition: color 0.3s ease;
+/* Точки (bullets) — сменил на золотой вместо синего/серого, с !important для override */
+.swiper-pagination {
+  bottom: -60px; /* Опустил ниже для пространства */
 }
 
-.slick-dots li.slick-active button:before {
-  color: var(--color-gold);
+.swiper-pagination-bullet {
+  background: var(--color-gold) !important; /* Светло-золотой для неактивных */
+  opacity: 0.6 !important; /* Увеличил видимость */
+  transition: background 0.3s ease, opacity 0.3s ease;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--color-goldHover); /* Контур для контраста */
+  box-shadow: 0 0 4px rgba(var(--color-gold), 0.3); /* Лёгкий glow */
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--color-gold) !important; /* Полный золотой для активного */
+  opacity: 1 !important;
 }
 
 footer {
-  background-image: url('/images/test.jpg'); /* CSS fallback, но Next/Image лучше для оптимизации */
-  background-size: cover;
-  background-position: center;
-  position: relative; /* Уже есть */
+  background: var(--color-black); /* Чистый чёрный фон, без изображения */
+  position: relative;
+  color: var(--color-grayLight); /* Текст для контраста */
+  border-top: 1px solid var(--color-gold); /* Золотой бордер сверху для акцента, если хочешь */
+  opacity: 1
 }
 
 footer::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--color-grayDark);
-  opacity: 0.6; /* Overlay */
-  z-index: -1;
+  /* Удаляем overlay — теперь не нужен */
+  display: none;
 }
+
+/* Hover эффект для Industries */
+.industries-grid {
+  position: relative; /* Для контекста */
+}
+
+.industry-card {
+  transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  will-change: filter, opacity, transform; /* Оптимизация для GPU */
+}
+
+.industries-grid:hover .industry-card {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.industries-grid .industry-card:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+  transform: scale(1.05); /* Лёгкий зум для акцента */
+  z-index: 10; /* Поднимаем над другими */
+}
+
+/* Для touch-устройств (active вместо hover) */
+@media (pointer: coarse) {
+  .industries-grid .industry-card:active {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  .industries-grid:active .industry-card:not(:active) {
+    filter: grayscale(100%);
+    opacity: 0.5;
+  }
+}
+
+/* Если хочешь glow на hover */
+.industry-card:hover {
+  box-shadow: 0 0 10px var(--color-gold); /* Золотой glow для вау-эффекта */
+}
+
+/* Модал для контактов */
+.contact-modal iframe {
+  border: none;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .contact-modal {
+    padding: 1rem; /* Меньше padding на мобильке */
+  }
+}
+
+
