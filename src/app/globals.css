@@ -1,0 +1,150 @@
+@import "tailwindcss"; /* Tailwind v4 */
+@import 'aos/dist/aos.css'; /* AOS анимации */
+@import 'slick-carousel/slick/slick.css'; /* Стили слайдера */
+@import 'slick-carousel/slick/slick-theme.css'; /* Тема слайдера */
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-blackDeep: #1A1A1A; /* Глубокий чёрный */
+  --color-grayMedium: #4F4F4F; /* Средний серый */
+  --color-grayLight: #ECECEC; /* Светлый серый */
+  --color-gold: #FFD700; /* Золотой */
+  --color-goldHover: #A67C00; /* Hover золотой */
+  --color-grayDark: #2B2B2B; /* Тёмно-серый */
+  --font-sans: var(--font-montserrat); /* Заголовки */
+  --font-mono: var(--font-roboto); /* Текст */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-blackDeep: var(--color-blackDeep);
+  --color-grayMedium: var(--color-grayMedium);
+  --color-grayLight: var(--color-grayLight);
+  --color-gold: var(--color-gold);
+  --color-goldHover: var(--color-goldHover);
+  --color-grayDark: var(--color-grayDark);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --color-blackDeep: #2B2B2B; /* Адаптация для dark */
+    --color-grayMedium: #B5B5B5;
+    --color-grayLight: #ECECEC;
+    --color-gold: #D3AF37; /* Золотой #D3AF37 #EFBF04 #FFD700 */
+    --color-goldHover: #A67C00;
+    --color-grayDark: #1A1A1A;
+    
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, sans-serif; /* Fallback */
+}
+
+
+
+
+/* Внутренняя подсветка логотипа (drop-shadow для эффекта "свечения" внутри) */
+.logo-highlight-gold {
+  filter: drop-shadow(0 0 2px #b8860b); /* Золотой внутренний glow (мягкий blur) */
+  transition: filter 0.3s ease; /* Плавный переход */
+}
+
+.logo-highlight-gold:hover {
+  filter: drop-shadow(0 0 6px #D3AF37); /* Усиление на hover */
+}
+
+/* Серебряный вариант (если хочешь нейтральный) */
+.logo-highlight-silver {
+  filter: drop-shadow(0 0 4px rgba(181, 181, 181, 0.5)); /* Серебряный внутренний glow */
+  transition: filter 0.3s ease;
+}
+
+.logo-highlight-silver:hover {
+  filter: drop-shadow(0 0 6px rgba(181, 181, 181, 0.7));
+}
+
+/* Кастомизация слайдера для плавности */
+.slick-slider {
+  position: relative;
+}
+
+.slick-track {
+  display: flex;
+  will-change: transform; /* Оптимизация для анимаций */
+  transform: translate3d(0, 0, 0); /* GPU-ускорение */
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Синхронизировано с sliderSettings */
+}
+
+.slick-slide {
+  opacity: 0.7; /* Лёгкая прозрачность для неактивных слайдов */
+  transition: opacity 0.3s ease-in-out; /* Плавное появление */
+}
+
+.slick-slide.slick-active {
+  opacity: 1; /* Активный слайд полностью видим */
+}
+
+/* Стрелки */
+.slick-prev, .slick-next {
+  z-index: 20;
+  background: var(--color-blackDeep);
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.slick-prev:hover, .slick-next:hover {
+  background: var(--color-goldHover);
+}
+
+.slick-prev:before, .slick-next:before {
+  color: var(--color-gold);
+  font-size: 24px;
+}
+
+.slick-prev {
+  left: -50px;
+}
+
+.slick-next {
+  right: -50px;
+}
+
+/* Точки */
+.slick-dots {
+  bottom: -40px; /* Чуть ниже для пространства */
+}
+
+.slick-dots li button:before {
+  color: var(--color-grayMedium);
+  font-size: 12px;
+  transition: color 0.3s ease;
+}
+
+.slick-dots li.slick-active button:before {
+  color: var(--color-gold);
+}
+
+footer {
+  background-image: url('/images/test.jpg'); /* CSS fallback, но Next/Image лучше для оптимизации */
+  background-size: cover;
+  background-position: center;
+  position: relative; /* Уже есть */
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-grayDark);
+  opacity: 0.6; /* Overlay */
+  z-index: -1;
+}
