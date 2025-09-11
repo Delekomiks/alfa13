@@ -12,7 +12,7 @@ import 'swiper/css/pagination'; // Для dots
 import { projects, partners, industries, Project, Partner, Industry } from './data'; // Импорт из data.ts
 
 // Настройки для портфолио с двумя видимыми на десктопе
-const portfolioSwiperSettings = {
+{/*const portfolioSwiperSettings = {
   modules: [Navigation, Pagination],
   slidesPerView: 1,
   spaceBetween: 16, // Эквивалент px-2 padding
@@ -26,7 +26,7 @@ const portfolioSwiperSettings = {
       navigation: true // Arrows только на десктопе
     }
   }
-};
+}; */}
 
 const partnersSwiperSettings = {
   modules: [Navigation, Pagination, Autoplay],
@@ -324,12 +324,12 @@ export default function Home() {
                 priority 
                 sizes="1200px"
               />
-              <span className="text-gold text-sm font-montserrat font-bold select-none">ООО «Альфа 13»</span>
+              
             </div>
             <ul className="hidden md:flex space-x-4 items-center">
               <li><NavLink href="#about" onClick={(e) => handleSmoothScroll(e, '#about')}>О компании</NavLink></li>
               <li><NavLink href="#industries" onClick={(e) => handleSmoothScroll(e, '#industries')}>Отрасли</NavLink></li>
-              <li><NavLink href="#portfolio" onClick={(e) => handleSmoothScroll(e, '#portfolio')}>Портфолио</NavLink></li>
+              {/*<li><NavLink href="#portfolio" onClick={(e) => handleSmoothScroll(e, '#portfolio')}>Портфолио</NavLink></li>*/}
               <li><NavLink href="#partners" onClick={(e) => handleSmoothScroll(e, '#partners')}>Партнёры</NavLink></li>
               <li><NavLink href="#contacts" onClick={(e) => handleSmoothScroll(e, '#contacts')}>Контакты</NavLink></li>
               <li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); }}>Связаться</NavLink></li>
@@ -405,7 +405,7 @@ export default function Home() {
         {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
 
         {/* Portfolio */}
-        <section id="portfolio" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
+        {/*<section id="portfolio" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Портфолио</h2>
             <Swiper key="portfolio-swiper" {...portfolioSwiperSettings} aria-label="Карусель портфолио">
@@ -416,7 +416,7 @@ export default function Home() {
               ))}
             </Swiper>
           </div>
-        </section>
+        </section>/*}
 
         {/* Partners */}
         <section id="partners" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
