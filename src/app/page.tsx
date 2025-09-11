@@ -316,11 +316,11 @@ export default function Home() {
               aria-label="Вернуться на главную страницу"
             >
               <Image 
-                src="/logo.svg" 
+                src="/logo.png" 
                 alt="Логотип компании Альфа 13" 
                 width={82} 
                 height={28} 
-                className="filter grayscale invert-[0.6] logo-highlight-gold" 
+                className="logo-highlight-gold" 
                 priority 
                 sizes="82px"
               />
