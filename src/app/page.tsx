@@ -322,7 +322,7 @@ export default function Home() {
                 height={28} 
                 className="logo-highlight-gold" 
                 priority 
-                sizes="82px"
+                sizes="1200px"
               />
               <span className="text-gold text-sm font-montserrat font-bold select-none">ООО «Альфа 13»</span>
             </div>
