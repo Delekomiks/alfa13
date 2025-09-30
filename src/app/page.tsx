@@ -4,29 +4,14 @@ import React from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import AOS from 'aos';
-import { Swiper, SwiperSlide } from 'swiper/react'; // Swiper вместо Slick
-import { Navigation, Pagination, Autoplay } from 'swiper/modules'; // Модули для arrows, dots, autoplay
-import 'swiper/css'; // Базовый CSS
-import 'swiper/css/navigation'; // Для arrows
-import 'swiper/css/pagination'; // Для dots
-import { projects, partners, industries, Project, Partner, Industry } from './data'; // Импорт из data.ts
+import { Swiper, SwiperSlide } from 'swiper/react'; 
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'; 
+import 'swiper/css'; 
+import 'swiper/css/navigation'; 
+import 'swiper/css/pagination'; 
+import { projects, partners, industries, Project, Partner, Industry } from './data'; 
 
-// Настройки для портфолио с двумя видимыми на десктопе
-{/*const portfolioSwiperSettings = {
-  modules: [Navigation, Pagination],
-  slidesPerView: 1,
-  spaceBetween: 16, // Эквивалент px-2 padding
-  loop: true,
-  speed: 300,
-  pagination: { clickable: true },
-  navigation: false, // По умолчанию false для mobile
-  breakpoints: {
-    768: {
-      slidesPerView: 3, // Два видимых на >=768px
-      navigation: true // Arrows только на десктопе
-    }
-  }
-}; */}
+
 
 const partnersSwiperSettings = {
   modules: [Navigation, Pagination, Autoplay],
@@ -35,7 +20,7 @@ const partnersSwiperSettings = {
   loop: true,
   speed: 300,
   pagination: { clickable: true },
-  navigation: false, // По умолчанию false
+  navigation: false, 
   autoplay: {
     delay: 18000,
     disableOnInteraction: false
@@ -49,14 +34,14 @@ const partnersSwiperSettings = {
       slidesPerView: 2,
       navigation: false
     },
-    1280: { // Добавил для больших экранов
+    1280: { 
       slidesPerView: 3,
       navigation: true
     }
   }
 };
 
-// Smooth scroll handler
+
 const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
   e.preventDefault();
   const targetElement = document.querySelector(targetId);
@@ -68,7 +53,7 @@ const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: st
   }
 };
 
-// Reusable NavLink
+
 const NavLink = ({ href, children, onClick, className = '' }: { href: string; children: ReactNode; onClick: (e: React.MouseEvent<HTMLAnchorElement>) => void; className?: string }) => (
   <a
     href={href}
@@ -80,7 +65,7 @@ const NavLink = ({ href, children, onClick, className = '' }: { href: string; ch
 );
 NavLink.displayName = 'NavLink';
 
-// Memoized ProjectCard с увеличенной высотой
+
 const ProjectCard = React.memo(({ project }: { project: Project }) => (
   <div 
     className="px-2 h-full"
@@ -149,7 +134,7 @@ const ProjectCard = React.memo(({ project }: { project: Project }) => (
 ));
 ProjectCard.displayName = 'ProjectCard';
 
-// Memoized PartnerCard
+
 const PartnerCard = React.memo(({ partner, index }: { partner: Partner; index: number }) => (
   <div 
     className="px-2 h-full"
@@ -191,7 +176,7 @@ const PartnerCard = React.memo(({ partner, index }: { partner: Partner; index: n
 ));
 PartnerCard.displayName = 'PartnerCard';
 
-// Memoized IndustryCard with modal trigger
+
 const IndustryCard = React.memo(({ industry, index, onOpenModal }: { industry: Industry; index: number; onOpenModal: (industry: Industry) => void }) => (
   <div 
     className="relative rounded-lg shadow-md overflow-hidden h-110 cursor-pointer industry-card"
@@ -215,7 +200,7 @@ const IndustryCard = React.memo(({ industry, index, onOpenModal }: { industry: I
 ));
 IndustryCard.displayName = 'IndustryCard';
 
-// Modal Component с добавленным списком из data.ts
+
 const IndustryModal = ({ industry, onClose }: { industry: Industry; onClose: () => void }) => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => setIsVisible(true), []);
@@ -238,21 +223,21 @@ const IndustryModal = ({ industry, onClose }: { industry: Industry; onClose: () 
   );
 };
 
-// Новый компонент для модалки контактов
+
 const ContactModal = ({ onClose }: { onClose: () => void }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
 
-    // Динамическая загрузка скрипта Yandex
+    
     const script = document.createElement('script');
     script.src = 'https://forms.yandex.ru/_static/embed.js';
     script.async = true;
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script); // Cleanup при закрытии
+      document.body.removeChild(script); 
     };
   }, []);
 
@@ -272,8 +257,8 @@ const ContactModal = ({ onClose }: { onClose: () => void }) => {
             src="https://forms.yandex.ru/cloud/68c1f380068ff0225209a264?iframe=1" 
             frameBorder="0" 
             name="ya-form-68c1f380068ff0225209a264" 
-            className="w-full md:w-[650px] min-h-[500px] md:min-h-[600px] h-auto rounded-md"  // Добавил rounded-md для стиля
-            style={{ margin: '0 auto' }}  // Fallback margin-auto для старых браузеров или если flex не сработает
+            className="w-full md:w-[650px] min-h-[500px] md:min-h-[600px] h-auto rounded-md"  
+            style={{ margin: '0 auto' }} 
           />
         </div>
       </div>
@@ -304,7 +289,7 @@ export default function Home() {
         <meta name="format-detection" content="telephone=no" />
       </Head>
       <main className="bg-grayDark min-h-screen font-roboto">
-        {/* Header */}
+        
         <header className={`bg-grayDark/76 shadow-md fixed w-full z-10 top-0 transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'bg-opacity-95' : ''}`}>
           <nav className="container mx-auto px-4 py-2 flex justify-between items-center">
             <div 
@@ -329,10 +314,10 @@ export default function Home() {
             <ul className="hidden md:flex space-x-4 items-center">
               <li><NavLink href="#about" onClick={(e) => handleSmoothScroll(e, '#about')}>О компании</NavLink></li>
               <li><NavLink href="#industries" onClick={(e) => handleSmoothScroll(e, '#industries')}>Отрасли</NavLink></li>
-              {/*<li><NavLink href="#portfolio" onClick={(e) => handleSmoothScroll(e, '#portfolio')}>Портфолио</NavLink></li>*/}
-              <li><NavLink href="#partners" onClick={(e) => handleSmoothScroll(e, '#partners')}>Партнёры</NavLink></li>
+           
+              {/*<li><NavLink href="#partners" onClick={(e) => handleSmoothScroll(e, '#partners')}>Партнёры</NavLink></li>*/}
               <li><NavLink href="#contacts" onClick={(e) => handleSmoothScroll(e, '#contacts')}>Контакты</NavLink></li>
-              <li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); }}>Связаться</NavLink></li>
+              {/*<li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); }}>Связаться</NavLink></li>*/}
             </ul>
             <button 
               className="md:hidden text-gold text-2xl focus:outline-none focus:ring-2 focus:ring-gold"
@@ -350,12 +335,12 @@ export default function Home() {
               <li><NavLink href="#portfolio" onClick={(e) => { handleSmoothScroll(e, '#portfolio'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Портфолио</NavLink></li>
               <li><NavLink href="#partners" onClick={(e) => { handleSmoothScroll(e, '#partners'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Партнёры</NavLink></li>
               <li><NavLink href="#contacts" onClick={(e) => { handleSmoothScroll(e, '#contacts'); setIsMobileMenuOpen(false); }} className="block w-full text-center">Контакты</NavLink></li>
-              <li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); setIsMobileMenuOpen(false); }} className="block w-full text-center">Связаться</NavLink></li>
+              {/*<li><NavLink href="#" onClick={(e) => { e.preventDefault(); setIsContactModalOpen(true); setIsMobileMenuOpen(false); }} className="block w-full text-center">Связаться</NavLink></li>*/}
             </ul>
           )}
         </header>
 
-        {/* Hero */}
+     
         <section id="about" className="min-h-[80vh] sm:min-h-screen flex items-center justify-center pt-24 relative overflow-hidden" data-aos="fade-up">
           <Image 
             src="/images/Backgrounds/about.gif" 
@@ -377,8 +362,8 @@ export default function Home() {
             </p>
           </div>
         </section>
-
-        {/* Industries */}
+          
+       
         <section id="industries" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Отрасли</h2>
@@ -403,22 +388,7 @@ export default function Home() {
         )}
 
         {isContactModalOpen && <ContactModal onClose={() => setIsContactModalOpen(false)} />}
-
-        {/* Portfolio */}
-        {/*<section id="portfolio" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Портфолио</h2>
-            <Swiper key="portfolio-swiper" {...portfolioSwiperSettings} aria-label="Карусель портфолио">
-              {projects.map((project) => (
-                <SwiperSlide key={project.id}>
-                  <ProjectCard project={project} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </section>/*}
-
-        {/* Partners */}
+{/*
         <section id="partners" className="py-10 sm:py-20 bg-grayDark pt-24" data-aos="fade-up">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 text-gold font-montserrat">Партнёры</h2>
@@ -428,11 +398,11 @@ export default function Home() {
                   <PartnerCard partner={partner} index={index} />
                 </SwiperSlide>
               ))}
-            </Swiper>
+            </Swiper> 
           </div>
-        </section>
-
-        {/* Footer с добавленным слоганом над линией */}
+        </section> 
+*/}
+       
 <footer id="contacts" className="text-white py-6 sm:py-8 border-t border-blackDeep mt-10 sm:mt-20">
   <div className="container mx-auto px-4 text-center">
     <p className="text-gold text-base sm:text-lg font-montserrat font-bold mb-4 uppercase">Будущее зависит от наших решений сегодня</p>
