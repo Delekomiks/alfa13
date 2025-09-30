@@ -414,7 +414,7 @@ export default function Home() {
       {/*<a href="/privacy" className="hover:text-gold transition font-roboto" aria-label="Политика конфиденциальности"> Политика конфиденциальности</a>*/}
     
     </p>
-    <p className="text-grayLight mt-8 font-roboto text-center">© 2025 ООО «Альфа 13». Все права защищены.</p>
+    <p className="text-grayLight mt-8 font-roboto text-center">© ООО «Альфа 13». Все права защищены.</p>
   </div>
 </footer>
       </main>
