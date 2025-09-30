@@ -410,8 +410,8 @@ export default function Home() {
     <p className="text-xs sm:text-sm text-grayLight mb-4 font-roboto">
       Адрес: ул. Примерная, 123 | 
       Тел: <a href="tel:+74951234567" className="hover:text-gold transition font-roboto">+7 (495) 123-45-67</a> | 
-      Email: <a href="mailto:info@alfa13.ru" className="hover:text-gold transition font-roboto" aria-label="Отправить email на info@alfa13.ru">info@alfa13.ru</a> | 
-      <a href="/privacy" className="hover:text-gold transition font-roboto" aria-label="Политика конфиденциальности"> Политика конфиденциальности</a>
+      Email: <a href="mailto:info@alfa13.ru" className="hover:text-gold transition font-roboto" aria-label="Отправить email на info@alfa13.ru">info@alfa13.ru</a>
+      {/*<a href="/privacy" className="hover:text-gold transition font-roboto" aria-label="Политика конфиденциальности"> Политика конфиденциальности</a>*/}
     
     </p>
     <p className="text-grayLight mt-8 font-roboto text-center">© 2025 ООО «Альфа 13». Все права защищены.</p>
